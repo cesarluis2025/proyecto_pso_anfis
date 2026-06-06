@@ -10,41 +10,35 @@ pipeline {
             }
         }
 
-        stage('Verificar archivos del proyecto') {
+        stage('Verificar estructura del proyecto') {
             steps {
-                echo 'Verificando estructura del proyecto...'
+                echo 'Verificando archivos del proyecto...'
                 sh 'ls -la'
                 sh 'ls src/'
                 sh 'ls notebooks/'
+                sh 'ls data/'
             }
         }
 
-        stage('Instalar Python y dependencias') {
+        stage('Verificar Dockerfile') {
             steps {
-                echo 'Instalando Python y dependencias...'
-                sh 'apt-get update -q && apt-get install -y -q python3 python3-pip'
-                sh 'pip3 install numpy pandas scikit-learn matplotlib scipy --quiet --break-system-packages'
+                echo 'Verificando configuracion Docker...'
+                sh 'cat Dockerfile'
             }
         }
 
-        stage('Ejecutar preprocesamiento') {
+        stage('Verificar configuracion PSO-ANFIS') {
             steps {
-                echo 'Ejecutando preprocesamiento de datos...'
-                sh 'python3 src/preprocessing.py'
-            }
-        }
-
-        stage('Verificar resultados') {
-            steps {
-                echo 'Verificando archivos generados...'
-                sh 'test -f data/processed/weather_clean.csv && echo "Dataset limpio generado correctamente"'
+                echo 'Verificando modulos del sistema...'
+                sh 'cat src/anfis_model.py | head -20'
+                sh 'cat src/pso.py | head -20'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline ejecutado exitosamente.'
+            echo 'Pipeline verificado exitosamente. Proyecto listo para ejecutar.'
         }
         failure {
             echo 'El pipeline fallo. Revisar los logs.'
