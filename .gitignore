@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Resultados generados (se producen al correr el proyecto)
+results/figures/*.png
+results/tables/*.csv
+
+# Docker
+.docker/

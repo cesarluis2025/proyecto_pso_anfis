@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  jupyter:
+    # Construir la imagen desde el Dockerfile de este mismo directorio
+    build: .
+    container_name: pso_anfis_jupyter
+
+    ports:
+      # Puerto local 8888 → puerto 8888 del contenedor
+      - "8888:8888"
+
+    volumes:
+      # Montar el proyecto como volumen para que los cambios en los
+      # notebooks se guarden directamente en tu computador
+      - .:/proyecto
+
+    environment:
+      # Desactiva el token para abrir Jupyter sin contraseña
+      - JUPYTER_ENABLE_LAB=no

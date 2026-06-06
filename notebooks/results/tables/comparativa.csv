@@ -1,0 +1,6 @@
+modelo,RMSE,MAE,R2
+ANFIS base (sin PSO),0.0139,0.0109,0.9924
+Regresión Lineal,0.0159,0.0126,0.9901
+Random Forest,0.0009,0.0002,1.0
+MLP (Red Neuronal),0.0045,0.0027,0.9992
+PSO-ANFIS,0.0069,0.0042,0.9981
