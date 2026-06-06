@@ -19,11 +19,11 @@ pipeline {
             }
         }
 
-        stage('Verificar dependencias Python') {
+        stage('Instalar Python y dependencias') {
             steps {
-                echo 'Verificando que Python está disponible...'
-                sh 'python3 --version'
-                sh 'pip3 install numpy pandas scikit-learn matplotlib scipy --quiet'
+                echo 'Instalando Python y dependencias...'
+                sh 'apt-get update -q && apt-get install -y -q python3 python3-pip'
+                sh 'pip3 install numpy pandas scikit-learn matplotlib scipy --quiet --break-system-packages'
             }
         }
 
