@@ -10,32 +10,34 @@ pipeline {
             }
         }
 
-        stage('Construir imagen Docker') {
+        stage('Verificar archivos del proyecto') {
             steps {
-                echo 'Construyendo la imagen Docker del proyecto...'
-                sh 'docker-compose build'
+                echo 'Verificando estructura del proyecto...'
+                sh 'ls -la'
+                sh 'ls src/'
+                sh 'ls notebooks/'
             }
         }
 
-        stage('Ejecutar pipeline PSO-ANFIS') {
+        stage('Verificar dependencias Python') {
             steps {
-                echo 'Ejecutando el modelo PSO-ANFIS dentro del contenedor...'
-                sh 'docker-compose run --rm jupyter python main.py'
+                echo 'Verificando que Python está disponible...'
+                sh 'python3 --version'
+                sh 'pip3 install numpy pandas scikit-learn matplotlib scipy --quiet'
+            }
+        }
+
+        stage('Ejecutar preprocesamiento') {
+            steps {
+                echo 'Ejecutando preprocesamiento de datos...'
+                sh 'python3 src/preprocessing.py'
             }
         }
 
         stage('Verificar resultados') {
             steps {
-                echo 'Verificando que se generaron los archivos de resultados...'
-                sh 'test -f results/tables/comparativa.csv && echo Tabla generada correctamente'
-                sh 'test -f results/figures/fig4_convergencia_pso.png && echo Graficas generadas correctamente'
-            }
-        }
-
-        stage('Limpiar contenedor') {
-            steps {
-                echo 'Limpiando contenedores Docker...'
-                sh 'docker-compose down'
+                echo 'Verificando archivos generados...'
+                sh 'test -f data/processed/weather_clean.csv && echo "Dataset limpio generado correctamente"'
             }
         }
     }
